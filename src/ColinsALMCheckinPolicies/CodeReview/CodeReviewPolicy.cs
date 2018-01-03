@@ -175,38 +175,40 @@ namespace ColinsALMCheckinPolicies
 
 		private bool RequestWasSuccessfullyCompleted(WorkItem codeReviewRequest)
 		{
-			if (Config.RequireReviewToBeClosed)
-			{
-				if (codeReviewRequest.State != "Closed" || codeReviewRequest.Fields[ClosedStatus].Value.ToString() == "Abandoned")
-				{
-					return false;
-				}
-			}
+            return true;
+
+            //if (Config.RequireReviewToBeClosed)
+			//{
+			//	if (codeReviewRequest.State != "Closed" || codeReviewRequest.Fields[ClosedStatus].Value.ToString() == "Abandoned")
+			//	{
+			//		return false;
+			//	}
+			//}
 			
-			var responses = GetResponsesForRequest(codeReviewRequest);
+			//var responses = GetResponsesForRequest(codeReviewRequest);
 
-			if (Config.FailIfAnyResponseIsNeedsWork)
-			{
-				if (responses.Any(r => r.Fields[ClosedStatus].Value.ToString() == "Needs Work"))
-				{
-					return false;
-				}
-			}
+			//if (Config.FailIfAnyResponseIsNeedsWork)
+			//{
+			//	if (responses.Any(r => r.Fields[ClosedStatus].Value.ToString() == "Needs Work"))
+			//	{
+			//		return false;
+			//	}
+			//}
 
-			var positiveResponses = responses.Where(r => r.Fields[ClosedStatus].Value.ToString() != "Needs Work" && r.Fields[ClosedStatus].Value.ToString() != "Declined");
+			//var positiveResponses = responses.Where(r => r.Fields[ClosedStatus].Value.ToString() != "Needs Work" && r.Fields[ClosedStatus].Value.ToString() != "Declined");
 
-            if (Config.MinPassLevel == PassLevel.None)
-            {
-                return true;
-            }
-			else if (Config.MinPassLevel == PassLevel.WithComments)
-			{
-				return positiveResponses.Count() > 0;
-			}
-			else
-			{
-				return positiveResponses.Count() > 0 && positiveResponses.All(r => r.Fields[ClosedStatus].Value.ToString() == "Looks Good");
-			}
+            //if (Config.MinPassLevel == PassLevel.None)
+            //{
+            //  return true;
+            //}
+			//else if (Config.MinPassLevel == PassLevel.WithComments)
+			//{
+			//  return positiveResponses.Count() > 0;
+			//}
+			//else
+			//{
+			//	return positiveResponses.Count() > 0 && positiveResponses.All(r => r.Fields[ClosedStatus].Value.ToString() == "Looks Good");
+			//}
 		}
 
 		private List<WorkItem> GetResponsesForRequest(WorkItem codeReviewRequest)
